@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+
+<mapper namespace="qna">
+	<insert id="insertQ" parameterType="QnaQVo">
+		INSERT INTO b_q
+		VALUES (b_q_seq.nextval,
+				#{toWhoNo },
+				#{fromUserNo},
+				#{qMessage },
+				SYSDATE,
+				#{classNo },
+				#{qType },
+				#{qRef },
+				#{pptNo }
+				 )
+				
+	</insert>
+	
+	
+	
+	
+	<select id="listQ" parameterType="YjQVo" resultType="YjQVo">
+		Select q.ppt_no AS pptNo,
+			   u.user_name AS userName,
+			   q.created_date AS createdDate,
+			   q.q_message As qMessage,
+			   q.qna_q_no AS qnaQNo,
+			   c.class_name AS className
+		from b_q q, b_user u, b_class c
+		where q.to_who_no = (select user_no from b_user where user_id= #{receiverId } ) 
+		and c.class_no = q.class_no
+		and u.user_no = q.from_user_no
+		 order by created_date desc
+	</select>
+	
+	
+	
+		<delete id="deleteQ" parameterType="QnaQVo">
+	delete from b_q where QNA_Q_NO = #{qnaQNo }
+	</delete>
+</mapper>

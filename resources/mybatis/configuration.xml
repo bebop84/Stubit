@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+	
+		<typeAlias alias="AttdNumberVo" type="com.bit2015.bitin.vo.AttdNumberVo"></typeAlias>
+		<typeAlias alias="AttendanceVo" type="com.bit2015.bitin.vo.AttendanceVo"></typeAlias>
+		<typeAlias alias="UserVo" type="com.bit2015.bitin.vo.UserVo"></typeAlias>
+		<typeAlias alias="ReplyVo" type="com.bit2015.bitin.vo.ReplyVo"></typeAlias>
+		<typeAlias alias="GroupVo" type="com.bit2015.bitin.vo.GroupVo"></typeAlias>
+		<typeAlias alias="ClassVo" type="com.bit2015.bitin.vo.ClassVo"></typeAlias>
+		<typeAlias alias="QnaQVo" type="com.bit2015.bitin.vo.QnaQVo"></typeAlias>
+		<typeAlias alias="MessageVo" type="com.bit2015.bitin.vo.MessageVo"></typeAlias>
+		<typeAlias alias="VoteVo" type="com.bit2015.bitin.vo.VoteVo"></typeAlias>
+		<typeAlias alias="BoardVo" type="com.bit2015.bitin.vo.BoardVo"></typeAlias>
+		<typeAlias alias="YjQVo" type="com.bit2015.bitin.vo.YjQVo"></typeAlias>
+		<typeAlias alias="NoticeVo" type="com.bit2015.bitin.vo.NoticeVo"></typeAlias>
+	</typeAliases>
+
+	<mappers>	
+		<mapper resource="mybatis/mappers/attd.xml" />
+		<mapper resource="mybatis/mappers/qna.xml" />
+		<mapper resource="mybatis/mappers/reply.xml" />
+		<mapper resource="mybatis/mappers/user.xml" />
+		<mapper resource="mybatis/mappers/group.xml" />
+		<mapper resource="mybatis/mappers/class.xml" />
+		<mapper resource="mybatis/mappers/vote.xml" />
+		<mapper resource="mybatis/mappers/message.xml" />
+		<mapper resource="mybatis/mappers/board.xml" />
+		<mapper resource="mybatis/mappers/notice.xml" />
+		<mapper resource="mybatis/mappers/chatting.xml" />
+		<mapper resource="mybatis/mappers/chris.xml" />
+	</mappers>
+</configuration>

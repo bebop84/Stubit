@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	
+	<!--  ******************************   2015.12.09 김현준이 임시로만든 게시판리스트를 불러오는 sql입니다.  **************************         -->
+	
+	<select id="selectListTemp" resultType="BoardVo">
+			<![CDATA[
+			SELECT class_no as classNo,
+				   board_no as boardNo,
+				   title as title,
+				   content as content,
+				   user_name as userName,
+				   view_cnt as viewCount,
+				   to_char(reg_date, 'yyyy-mm-dd' ) as regDate
+			  FROM b_board,b_user
+			  where b_board.USER_NO=b_user.USER_NO
+			]]>
+	</select>
+
+		
+	<!-- <select id="selectList" parameterType="long"  resultType="BoardVo">
+			SELECT class_no as classNo,
+				   board_no as boardNo,
+				   title as title,
+				   content as content,
+				   user_name as userName,
+				   view_cnt as viewCount,
+				   to_char(reg_date, 'mm-dd' ) as regDate
+			  FROM b_board,b_user
+			  where b_board.CLASS_NO=#{classNo }
+			   and b_board.USER_NO=b_user.USER_NO
+	</select> -->
+	
+<select id="selectList" parameterType="long"  resultType="BoardVo">
+         SELECT class_no as classNo,
+               post_no as postNo,
+               title as title,
+               content as content,
+               user_name as userName,
+               view_cnt as viewCount,
+               to_char(reg_date, 'mm-dd' ) as regDate
+           FROM b_board,b_user
+           where b_board.CLASS_NO=#{classNo }
+            and b_board.board_type = 1
+            and b_board.USER_NO=b_user.USER_NO
+
+   </select>	<!-- **************************************************************************************************************** -->
+	<select id="selectBoardName" parameterType="long" resultType="ClassVo">
+	        select class_name as className
+	               from b_class
+	               where b_class.class_No=#{classNo }
+	               
+	</select>
+	<!--  ******************************   2015.12.11 김현준이 임시로만든 게시판content와 조회수를 불러오는 sql입니다.  **************************         -->
+	<update id="updateViewCount" parameterType="long">
+		<![CDATA[
+		update b_board
+		   set view_cnt = view_cnt + 1		
+         where post_no = #{postNo }
+		]]>			
+	</update>
+	
+	
+	<select id="selectByNo" resultType="BoardVo" parameterType="long">
+		<![CDATA[
+		select board_no as boardNo,
+			   title,
+			   content,
+			   reg_date as regDate
+		  from b_board
+		 where board_no=#{boardNo }			
+		]]>
+	</select>
+	
+	
+	<!-- **************************************************************************************************************** -->
+	
+	<insert id="insert" parameterType="BoardVo">
+		<![CDATA[
+		insert into b_board 
+		values ( #{classNo }, b_board_no_seq.nextval, #{title }, #{content }, #{userNo }, 0, SYSDATE, #{boardType})
+				]]>			 
+	</insert>
+	
+	<select id="getPostByPostNo" parameterType="long" resultType="BoardVo">
+      SELECT b.class_no AS classNO,
+            b.post_no AS postNo,
+            b.title AS title,
+            b.content,
+            b.user_no AS userNO,
+            b.view_cnt AS viewCount,
+            to_char( b.reg_date, 'yyyy/mm/dd   hh:mi' ) as regDate,
+            b.board_type AS boardType,
+         u.user_name AS userName
+      FROM B_BOARD b, b_user u      
+      WHERE post_no = #{postNo }
+      AND b.user_no = u.user_no
+   </select>
+   
+   <insert id="insertReply" parameterType="BoardVo">
+		<![CDATA[
+		insert into B_reply 
+		values ( #{postNo }, #{userNo}, #{reply }, SYSDATE)
+				]]>			 
+	</insert>
+	
+	<select id="getReplyByPostno" parameterType="long" resultType="ReplyVo">
+	    select r.post_no as postNo,
+	           u.user_name as userName,
+	           r.reply,
+	           to_char( r.reg_date, 'yyyy/mm/dd hh:mi' ) as regDate,
+	    from b_user u. b_reply r
+	    where post_no = #{postNo }
+	    and b.post_no = r.post_no,
+	        r.user_no = u.user_no
+	</select>
+	
+	<delete id="delete" parameterType="map">
+		<![CDATA[
+		delete
+		  from b_board
+		 where post_no = #{postNo }
+		]]>
+	</delete>
+	
+	<update id="update" parameterType="BoardVo">
+		<![CDATA[
+		update b_board
+		   set title = #{title }, content = #{content }
+         where post_no = #{postNo }
+		]]>			
+	</update>
+	
+	<select id="selectClassNobyPostNo" resultType="BoardVo" parameterType="long">
+		<![CDATA[
+		select class_no as classNo
+		  from b_board
+		 where postNo = #{postNo }			
+		]]>
+	</select>
+	
+</mapper>
